@@ -5,6 +5,7 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import CustomHeader from '@/components/CustomHeader';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 
 
@@ -17,6 +18,7 @@ export const unstable_settings = {
 export default function RootLayoutNav() {
 
   return (
+    <BottomSheetModalProvider>
       <Stack>
         <Stack.Screen 
           name="index" 
@@ -25,5 +27,6 @@ export default function RootLayoutNav() {
             header: () => <CustomHeader />
            }} />
       </Stack>
+    </BottomSheetModalProvider>
   );
 }

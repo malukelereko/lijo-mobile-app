@@ -1,8 +1,10 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, TextInput } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
+import React, { useRef } from 'react'
 import Colors from '@/constants/Colors'
 import { Link } from 'expo-router';
+import BottomSheet from './BottomSheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 const SearchBar = () => (
     <View style={styles.searchContainer}>
@@ -22,15 +24,26 @@ const SearchBar = () => (
 )
 
 const CustomHeader = () => {
+
+    const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+    const openModal = () => {
+        bottomSheetRef.current?.present();
+        console.log("Modal")
+    }
+
   return (
     <SafeAreaView style={{ flex: 1}}>
+
+        <BottomSheet ref={bottomSheetRef} />
+
       <View style={styles.container}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={openModal}>
             <Image style={styles.bike} source={require('@/assets/images/bike.png')} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.titleContainer}>
-            <Text style={styles.title}>Delivery . Now</Text>
+        <TouchableOpacity onPress={openModal} style={styles.titleContainer}>
+            <Text style={styles.title}>Delivery · Now</Text>
             <View style={{ flexDirection: 'row'}}>
                 <Text style={styles.subtitle}>Maseru, LS</Text>
                 <Ionicons name='chevron-down' size={20} color={Colors.primary}></Ionicons>
