@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import CustomHeader from '@/components/CustomHeader';
 
 
 
@@ -17,7 +18,12 @@ export default function RootLayoutNav() {
 
   return (
       <Stack>
-        <Stack.Screen name="index" options={{  }} />
+        <Stack.Screen 
+          name="index" 
+          options={{ 
+            
+            header: () => <CustomHeader />
+           }} />
       </Stack>
   );
 }
