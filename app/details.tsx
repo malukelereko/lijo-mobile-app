@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react'
 import Colors from '@/constants/Colors';
 import ParallaxScrollView from '../components/ParallaxScrollView';
 import { Link, useNavigation } from 'expo-router';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { restaurant } from '@/assets/data/restaurant';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -116,6 +116,23 @@ const details = () => {
                 />
             </View>
         </ParallaxScrollView>
+
+        {/* Sticky segments */}
+        <Animated.View style={[styles.stickySegments, animatedStyles]}>
+            <View style={styles.segmentsShadow}>
+            <ScrollView ref={scrollRef} horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.segmentScrollview}>
+                {restaurant.food.map((item, index) => (
+                <TouchableOpacity
+                    ref={(ref) => (itemsRef.current[index] = ref!)}
+                    key={index}
+                    style={activeIndex === index ? styles.segmentButtonActive : styles.segmentButton}
+                    onPress={() => selectCategory(index)}>
+                    <Text style={activeIndex === index ? styles.segmentTextActive : styles.segmentText}>{item.category}</Text>
+                </TouchableOpacity>
+                ))}
+            </ScrollView>
+            </View>
+        </Animated.View>
 
         {/* Footer Basket */}
         {/* {items > 0 && (
