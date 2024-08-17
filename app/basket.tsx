@@ -5,19 +5,12 @@ import { Link } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SwipeableRow from '@/components/SwipeableRow';
+import useBasketStore from '@/store/basketStore';
 
 const basket = () => {
-  // const { products, total, clearCart, reduceProduct } = useBasketStore();
+  const { products, total, clearCart, reduceProduct } = useBasketStore();
   const [order, setOrder] = useState(false);
-  const [products, setProducts] = useState([
-    {
-      id: '1',
-      name: 'Sample Product',
-      price: 750.00,
-      quantity: 2,
-    }
-  ])
-  // const 
+
 
   const FEES = {
     service: 2.99,
@@ -26,12 +19,8 @@ const basket = () => {
 
   const startCheckout = () => {
     setOrder(true);
-    // clearCart();
+    clearCart();
   };
-
-  const reduceProduct = (item: any) => {
-    console.log(item)
-  }
 
   return (
     <>
@@ -67,7 +56,7 @@ const basket = () => {
                 <View style={{ height: 1, backgroundColor: Colors.grey }}></View>
                 <View style={styles.totalRow}>
                   <Text style={styles.total}>Subtotal</Text>
-                  <Text style={{ fontSize: 18 }}>LSL 1500</Text>
+                  <Text style={{ fontSize: 18 }}>LSL {total}</Text>
                 </View>
 
                 <View style={styles.totalRow}>
@@ -82,7 +71,7 @@ const basket = () => {
 
                 <View style={styles.totalRow}>
                   <Text style={styles.total}>Order Total</Text>
-                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>LSL {(1500 + FEES.service + FEES.delivery).toFixed(2)}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>LSL {(total + FEES.service + FEES.delivery).toFixed(2)}</Text>
                 </View>
               </View>
             }

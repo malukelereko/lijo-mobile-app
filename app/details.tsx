@@ -7,6 +7,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { restaurant } from '@/assets/data/restaurant';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useBasketStore from '@/store/basketStore';
 
 const details = () => {
 
@@ -27,7 +28,7 @@ const details = () => {
         index,
     }));
 
-    // const { items, total } = useBasketStore();
+    const { items, total } = useBasketStore();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -135,7 +136,7 @@ const details = () => {
         </Animated.View>
 
         {/* Footer Basket */}
-        {/* {items > 0 && (
+        {items > 0 && (
             <View style={styles.footer}>
             <SafeAreaView edges={['bottom']} style={{ backgroundColor: '#fff' }}>
                 <Link href="/basket" asChild>
@@ -147,8 +148,8 @@ const details = () => {
                 </Link>
             </SafeAreaView>
             </View>
-        )} */}
-        <View style={styles.footer}>
+        )}
+        {/* <View style={styles.footer}>
             <SafeAreaView edges={['bottom']} style={{ backgroundColor: '#fff' }}>
                 <Link href="/basket" asChild>
                 <TouchableOpacity style={styles.fullButton}>
@@ -158,7 +159,7 @@ const details = () => {
                 </TouchableOpacity>
                 </Link>
             </SafeAreaView>
-        </View>
+        </View> */}
     </>
   )
 }
