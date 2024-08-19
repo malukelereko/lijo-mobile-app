@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: 'index',
+  initialRouteName: '(tabs)',
 };
 
 
@@ -22,12 +22,15 @@ export default function RootLayoutNav() {
   return (
     <BottomSheetModalProvider>
       <Stack>
-        <Stack.Screen 
+        {/* <Stack.Screen 
           name="index" 
           options={{ 
             
             header: () => <CustomHeader />
-           }} />
+           }} /> */}
+
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
 
         <Stack.Screen 
           name="(modal)/filter" 
@@ -83,9 +86,7 @@ export default function RootLayoutNav() {
           }}
         />
 
-      </Stack>
-
-      
+      </Stack>    
     </BottomSheetModalProvider>
   );
 }
