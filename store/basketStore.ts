@@ -13,8 +13,10 @@ export interface BasketState {
     addProduct: (product: Product) => void;
     reduceProduct: (product: Product) => void;
     clearCart: () => void;
+    setDeliveryMethod: (method: 'delivery' | 'pickup') => void;
     items: number;
     total: number;
+    deliveryMethod: 'delivery' | 'pickup'; 
 }
 
 export interface BasketState {
@@ -30,6 +32,7 @@ export interface BasketState {
     products: [],
     items: 0,
     total: 0,
+    deliveryMethod: 'pickup',
     addProduct: (product) => {
       set((state) => {
         state.items += 1;
@@ -61,6 +64,8 @@ export interface BasketState {
       });
     },
     clearCart: () => set({ products: [], items: 0, total: 0 }),
+
+    setDeliveryMethod: (method) => set({ deliveryMethod: method }),
   }));
   
   export default useBasketStore;

@@ -4,10 +4,13 @@ import { BottomSheetModal, BottomSheetBackdrop, useBottomSheetModal } from '@gor
 import Colors from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import useBasketStore from '@/store/basketStore';
 
 export type Ref = BottomSheetModal;
 
 const BottomSheet = forwardRef<Ref>((props, ref) => {
+
+    const { deliveryMethod, setDeliveryMethod } = useBasketStore();
 
     const snapPoints = useMemo(() => ['50%'], []);
     const renderBackdrop = useCallback((props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />, []);
@@ -23,11 +26,21 @@ const BottomSheet = forwardRef<Ref>((props, ref) => {
     >
       <View style={styles.contentContainer}>
         <View style={styles.toggle}>
-          <TouchableOpacity style={styles.toggleActive}>
-            <Text style={styles.activeText}>Delivery</Text>
+          <TouchableOpacity
+            style={deliveryMethod === 'delivery' ? styles.toggleActive : styles.toggleInactive}
+            onPress={() => setDeliveryMethod('delivery')}
+          >
+            <Text style={deliveryMethod === 'delivery' ? styles.activeText : styles.inactiveText}>
+              Delivery
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.toggleInactive}>
-            <Text style={styles.inactiveText}>Pickup</Text>
+          <TouchableOpacity
+            style={deliveryMethod === 'pickup' ? styles.toggleActive : styles.toggleInactive}
+            onPress={() => setDeliveryMethod('pickup')}
+          >
+            <Text style={deliveryMethod === 'pickup' ? styles.activeText : styles.inactiveText}>
+              Pickup
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -80,6 +93,7 @@ const styles = StyleSheet.create({
       fontWeight: '700',
     },
     toggleInactive: {
+      backgroundColor: Colors.lightGrey,
       padding: 8,
       borderRadius: 32,
       paddingHorizontal: 30,
