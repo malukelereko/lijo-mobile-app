@@ -74,7 +74,7 @@ export default function RootLayoutNav() {
         <Stack.Screen
           name="basket"
           options={{
-            headerTitle: 'Basket',
+            headerTitle: 'Your Food Cart',
             headerLeft: () => (
               <TouchableOpacity
                 onPress={() => {

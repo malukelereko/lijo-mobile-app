@@ -1,14 +1,25 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useRef, useState } from 'react'
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { Link } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SwipeableRow from '@/components/SwipeableRow';
 import useBasketStore from '@/store/basketStore';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet from '@/components/BottomSheet';
 
 const basket = () => {
-  const { products, total, clearCart, reduceProduct } = useBasketStore();
+
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const openModal = () => {
+    bottomSheetRef.current?.present();
+    console.log("Modal")
+  }
+
+  const { products, total, clearCart, reduceProduct, addProduct } = useBasketStore();
   const [order, setOrder] = useState(false);
 
 
@@ -36,8 +47,23 @@ const basket = () => {
         </View>
       )}
 
-{!order && (
+      {!order && (
         <>
+          <BottomSheet ref={bottomSheetRef} />
+          <View style={styles.card}>
+            <Text style={styles.p}>
+              Deliver to
+            </Text>
+            <TouchableOpacity onPress={openModal}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Text style={styles.title}>
+                  Seapoint Maseru, Lesotho
+                </Text>
+
+                <Ionicons name='chevron-down' size={24}></Ionicons>
+              </View>
+            </TouchableOpacity>
+          </View>
           <FlatList
             data={products}
             ListHeaderComponent={<Text style={styles.section}>Items</Text>}
@@ -45,8 +71,23 @@ const basket = () => {
             renderItem={({ item }) => (
               <SwipeableRow onDelete={() => reduceProduct(item)}>
                 <View style={styles.row}>
-                  <Text style={{ color: Colors.primary, fontSize: 18 }}>{item.quantity}x</Text>
-                  <Text style={{ flex: 1, fontSize: 18 }}>{item.name}</Text>
+                  <Image source={item.img} style={styles.itemImg}/>
+                  <View style={{ justifyContent: 'center', alignItems: 'center', gap: 10}}>
+                    <Text style={{ flex: 1, fontSize: 18 }}>{item.name}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: Colors.lightGrey, borderRadius: 10, paddingHorizontal: 20, paddingVertical: 10}}>
+                      
+                      <TouchableOpacity onPress={() =>reduceProduct(item)}>
+                        <Feather name='minus'/>
+                      </TouchableOpacity>
+                      <Text style={{ color: Colors.primary, fontSize: 18 }}>{item.quantity}</Text>
+                      <TouchableOpacity onPress={() =>addProduct(item)}>
+                        <Feather name='plus'/>
+                      </TouchableOpacity>
+                      
+                    </View>
+                    
+                  </View>
+                  
                   <Text style={{ fontSize: 18 }}>${item.price * item.quantity}</Text>
                 </View>
               </SwipeableRow>
@@ -70,7 +111,7 @@ const basket = () => {
                 </View>
 
                 <View style={styles.totalRow}>
-                  <Text style={styles.total}>Order Total</Text>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Order Total</Text>
                   <Text style={{ fontSize: 18, fontWeight: 'bold' }}>LSL {(total + FEES.service + FEES.delivery).toFixed(2)}</Text>
                 </View>
               </View>
@@ -93,11 +134,30 @@ const basket = () => {
 export default basket
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    marginHorizontal: 5,
+    padding: 20,
+    borderRadius: 10
+  },
+
+  title: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+
+  p: {
+
+  },
+
   row: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    padding: 10,
-    gap: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    // gap: 20,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   section: {
@@ -114,6 +174,7 @@ const styles = StyleSheet.create({
   total: {
     fontSize: 18,
     color: Colors.medium,
+    fontWeight: '600'
   },
   footer: {
     position: 'absolute',
@@ -152,5 +213,11 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     marginTop: 20,
+  },
+
+  itemImg: {
+    height: 60,
+    width: 60,
+    borderRadius: 10
   },
 });
